@@ -2,8 +2,6 @@
 
 source "https://rubygems.org"
 
-git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+git_source(:github) {|Poker-hand-validator| "https://github.com/junolouise/Poker-hand-validator" }
 
-# gem "rails"
 ruby '2.7'
-gem 'rspec', '~> 3.9'
