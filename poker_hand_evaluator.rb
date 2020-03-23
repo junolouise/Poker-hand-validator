@@ -8,6 +8,7 @@ class PokerHandEvaluator
 
   def hand_classifications
     return ["FOUR_OF_A_KIND"] if four_of_a_kind?
+    return ["STRAIGHT"] if straight?
     return ["THREE_OF_A_KIND"] if three_of_a_kind?
     return ["TWO_PAIR"] if two_pair?
     return ["ONE_PAIR"] if one_pair?
@@ -45,6 +46,14 @@ class PokerHandEvaluator
     end
     result = first_digit.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
     result.has_value?(4)
+  end
+
+  def straight?
+    seperated_hand = @hands.split
+    first_digit = seperated_hand.map do |card|
+      card.chop 
+    end
+    first_digit.each_cons(4)
   end
 end
 
