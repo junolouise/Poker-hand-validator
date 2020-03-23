@@ -7,17 +7,24 @@ class PokerHandEvaluator
   end
 
   def hand_classifications
-   one_pair
+    return ["TWO_PAIR"] if two_pair?
+    return ["ONE_PAIR"] if one_pair?
   end
 
-  def one_pair
+  def one_pair?
     seperated_hand = @hands.split
     first_digit = seperated_hand.map do |card|
       card.chop 
     end
-    if
-      first_digit.uniq.length == 4
-      return ["ONE_PAIR"]
-    end
+    first_digit.uniq.length == 4
   end
+
+  def two_pair?
+    seperated_hand = @hands.split
+    first_digit = seperated_hand.map do |card|
+      card.chop 
+    end
+    first_digit.uniq.length == 3
+  end
+
 end
