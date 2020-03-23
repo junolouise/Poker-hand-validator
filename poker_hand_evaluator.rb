@@ -2,12 +2,16 @@
 
 require 'pry'
 class PokerHandEvaluator
+
+  STRAIGHT_HAND = ['2345A','23456','34567','45678','56789','06789','0789J','089JQ','09JKQ','0AJKQ']
+
   def initialize(hands)
     @hands = hands.first
   end
 
   def hand_classifications
     return ["FOUR_OF_A_KIND"] if four_of_a_kind?
+    return ["FULL_HOUSE"] if full_house?
     return ["FLUSH"] if flush?
     return ["STRAIGHT"] if straight?
     return ["THREE_OF_A_KIND"] if three_of_a_kind?
@@ -17,44 +21,46 @@ class PokerHandEvaluator
 
   def one_pair?
     seperated_hand = @hands.split
-    first_digit = seperated_hand.map do |card|
+    value = seperated_hand.map do |card|
       card.chop 
     end
-    first_digit.uniq.length == 4
+    result = value.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
+    result.has_value?(2)
   end
-
+ 
   def two_pair?
     seperated_hand = @hands.split
-    first_digit = seperated_hand.map do |card|
+    value = seperated_hand.map do |card|
       card.chop 
     end
-    first_digit.uniq.length == 3
+    value
   end
 
   def three_of_a_kind?
     seperated_hand = @hands.split
-    first_digit = seperated_hand.map do |card|
+    value = seperated_hand.map do |card|
       card.chop 
     end
-    result = first_digit.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
+    result = value.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
     result.has_value?(3)
   end
 
   def four_of_a_kind?
     seperated_hand = @hands.split
-    first_digit = seperated_hand.map do |card|
+    value = seperated_hand.map do |card|
       card.chop 
     end
-    result = first_digit.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
+    result = value.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
     result.has_value?(4)
   end
 
   def straight?
     seperated_hand = @hands.split
-    first_digit = seperated_hand.map do |card|
+    value = seperated_hand.map do |card|
       card.chop 
-    end
-    first_digit.each_cons(4)
+    end.sort.join
+    
+    STRAIGHT_HAND.include?(value)
   end
 
   def flush?
@@ -64,6 +70,10 @@ class PokerHandEvaluator
     end
     result = suit.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
     result.has_value?(5)
+  end
+
+  def full_house?
+    (three_of_a_kind? && one_pair?)
   end
 end
 
