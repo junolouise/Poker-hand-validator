@@ -7,6 +7,10 @@ class PokerHandEvaluator
   end
 
   def hand_classifications
+   one_pair
+  end
+
+  def one_pair
     seperated_hand = @hands.split
     first_digit = seperated_hand.map do |card|
       card.chop 
