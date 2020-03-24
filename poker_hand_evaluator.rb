@@ -7,24 +7,46 @@ class PokerHandEvaluator
   ROYAL_FLUSH = ['0AJKQ']
 
   def initialize(hands)
-    @hands = hands.first
+    @hands = hands
   end
 
   def hand_classifications
-    return ["ROYAL_FLUSH"] if royal_flush?
-    return ["STRAIGHT_FLUSH"] if straight_flush?
-    return ["FOUR_OF_A_KIND"] if four_of_a_kind?
-    return ["FULL_HOUSE"] if full_house?
-    return ["FLUSH"] if flush?
-    return ["STRAIGHT"] if straight?
-    return ["THREE_OF_A_KIND"] if three_of_a_kind?
-    return ["TWO_PAIR"] if two_pair?
-    return ["ONE_PAIR"] if one_pair?
-    return ["HIGH_CARD"]
+    hand_scores = []
+
+    @hands.each do |hand|
+      if royal_flush?(hand)
+        hand_scores << "ROYAL_FLUSH"
+      elsif straight_flush?(hand)
+        hand_scores << "STRAIGHT_FLUSH"
+      elsif
+        four_of_a_kind?(hand)
+        hand_scores << "FOUR_OF_A_KIND"
+      elsif full_house?(hand)
+        hand_scores << "FULL_HOUSE"
+      elsif flush?(hand)
+        hand_scores << "FLUSH"
+      elsif straight?(hand)
+        hand_scores << "STRAIGHT"
+      elsif three_of_a_kind?(hand)
+        hand_scores << "THREE_OF_A_KIND"
+      elsif two_pair?(hand)
+        hand_scores << "TWO_PAIR"
+      elsif one_pair?(hand)
+        hand_scores << "ONE_PAIR"
+      else
+        hand_scores << "HIGH_CARD"
+      end
+    end
+
+    hand_scores
   end
 
-  def one_pair?
-    seperated_hand = @hands.split
+  def hand_checker
+
+  end
+
+  def one_pair?(hand)
+    seperated_hand = hand.split
     value = seperated_hand.map do |card|
       card.chop 
     end
@@ -32,8 +54,8 @@ class PokerHandEvaluator
     result.has_value?(2)
   end
  
-  def two_pair?
-    seperated_hand = @hands.split
+  def two_pair?(hand)
+    seperated_hand = hand.split
     value = seperated_hand.map do |card|
       card.chop 
     end
@@ -42,8 +64,8 @@ class PokerHandEvaluator
     not_pairs.length == 1
   end
 
-  def three_of_a_kind?
-    seperated_hand = @hands.split
+  def three_of_a_kind?(hand)
+    seperated_hand = hand.split
     value = seperated_hand.map do |card|
       card.chop 
     end
@@ -51,8 +73,8 @@ class PokerHandEvaluator
     result.has_value?(3)
   end
 
-  def four_of_a_kind?
-    seperated_hand = @hands.split
+  def four_of_a_kind?(hand)
+    seperated_hand = hand.split
     value = seperated_hand.map do |card|
       card.chop 
     end
@@ -60,8 +82,8 @@ class PokerHandEvaluator
     result.has_value?(4)
   end
 
-  def straight?
-    seperated_hand = @hands.split
+  def straight?(hand)
+    seperated_hand = hand.split
     value = seperated_hand.map do |card|
       card.chop 
     end.sort.join
@@ -69,8 +91,8 @@ class PokerHandEvaluator
     STRAIGHT_HAND.include?(value)
   end
 
-  def flush?
-    seperated_hand = @hands.split
+  def flush?(hand)
+    seperated_hand = hand.split
     suit = seperated_hand.map do |card|
       card.slice(1)
     end
@@ -78,21 +100,21 @@ class PokerHandEvaluator
     result.has_value?(5)
   end
 
-  def full_house?
-    ( three_of_a_kind? && one_pair? )
+  def full_house?(hand)
+    ( three_of_a_kind?(hand) && one_pair?(hand) )
   end
 
-  def straight_flush?
-    ( flush? && straight? )
+  def straight_flush?(hand)
+    ( flush?(hand) && straight?(hand) )
   end
 
-  def royal_flush?
-    seperated_hand = @hands.split
+  def royal_flush?(hand)
+    seperated_hand = hand.split
     value = seperated_hand.map do |card|
       card.chop 
     end.sort.join
     
-    ( ROYAL_FLUSH.include?(value) && flush? )
+    ( ROYAL_FLUSH.include?(value) && flush?(hand) )
   end
 end
 
