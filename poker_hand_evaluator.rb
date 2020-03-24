@@ -2,11 +2,21 @@
 
 require 'pry'
 class PokerHandEvaluator
+  class InvalidHandError < StandardError; end
+
   STRAIGHT_HAND = ['2345A','23456','34567','45678','56789','06789','0789J','089JQ','09JKQ','0AJKQ']
   ROYAL_FLUSH = ['0AJKQ']
 
   def initialize(hands)
     @hands = hands
+    valid?
+  end
+
+  def valid?
+    @hands.map do |hand|
+      raise InvalidHandError if hand.length != 14
+    end
+    
   end
 
   def hand_classifications

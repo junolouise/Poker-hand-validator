@@ -1,6 +1,8 @@
 require_relative 'poker_hand_evaluator'
 require 'minitest'
 require 'minitest/autorun'
+require 'minitest/reporters'
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(:color => true)]
 
 describe PokerHandEvaluator do
   describe 'validations' do
