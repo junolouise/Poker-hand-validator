@@ -20,6 +20,7 @@ class PokerHandEvaluator
     return ["THREE_OF_A_KIND"] if three_of_a_kind?
     return ["TWO_PAIR"] if two_pair?
     return ["ONE_PAIR"] if one_pair?
+    return ["HIGH_CARD"]
   end
 
   def one_pair?
