@@ -2,7 +2,6 @@
 
 require 'pry'
 class PokerHandEvaluator
-
   STRAIGHT_HAND = ['2345A','23456','34567','45678','56789','06789','0789J','089JQ','09JKQ','0AJKQ']
   ROYAL_FLUSH = ['0AJKQ']
 
@@ -13,25 +12,25 @@ class PokerHandEvaluator
   def hand_classifications
     @hands.map do |hand|
       if royal_flush?(hand)
-        "ROYAL_FLUSH"
+        'ROYAL_FLUSH'
       elsif straight_flush?(hand)
-        "STRAIGHT_FLUSH"
+        'STRAIGHT_FLUSH'
       elsif four_of_a_kind?(hand)
-        "FOUR_OF_A_KIND"
+        'FOUR_OF_A_KIND'
       elsif full_house?(hand)
-        "FULL_HOUSE"
+        'FULL_HOUSE'
       elsif flush?(hand)
-        "FLUSH"
+        'FLUSH'
       elsif straight?(hand)
-        "STRAIGHT"
+        'STRAIGHT'
       elsif three_of_a_kind?(hand)
-        "THREE_OF_A_KIND"
+        'THREE_OF_A_KIND'
       elsif two_pair?(hand)
-        "TWO_PAIR"
+        'TWO_PAIR'
       elsif one_pair?(hand)
-        "ONE_PAIR"
+        'ONE_PAIR'
       else
-        "HIGH_CARD"
+        'HIGH_CARD'
       end
     end
   end
@@ -54,56 +53,55 @@ class PokerHandEvaluator
 
   def find_values(hand)
     seperate_hand(hand).map do |card|
-      card.chop 
+      card.chop
     end
   end
 
   def one_pair?(hand)
     card_values = find_values(hand)
-    result = card_values.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
-    result.has_value?(2)
+    result = card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+    result.value?(2)
   end
- 
+
   def two_pair?(hand)
     card_values = find_values(hand)
     result = card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
-    not_pairs = result.delete_if{|card, counts| counts == 2}
+    not_pairs = result.delete_if { |card, counts| counts == 2 }
     not_pairs.length == 1
   end
 
   def three_of_a_kind?(hand)
     card_values = find_values(hand)
-    result = card_values.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
-    result.has_value?(3)
+    result = card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+    result.value?(3)
   end
 
   def four_of_a_kind?(hand)
     card_values = find_values(hand)
-    result = card_values.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
-    result.has_value?(4)
+    result = card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+    result.value?(4)
   end
 
   def straight?(hand)
     ordered_hand_values = find_values(hand).sort.join
-    
     STRAIGHT_HAND.include?(ordered_hand_values)
   end
 
   def flush?(hand)
     suit = find_suit(hand)
-    result = suit.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
-    result.has_value?(5)
+    result = suit.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+    result.value?(5)
   end
 
   def full_house?(hand)
-    ( three_of_a_kind?(hand) && one_pair?(hand) )
+    (three_of_a_kind?(hand) && one_pair?(hand))
   end
 
   def straight_flush?(hand)
-    ( flush?(hand) && straight?(hand) )
+    (flush?(hand) && straight?(hand))
   end
 
   def royal_flush?(hand)
-    ( ROYAL_FLUSH.include?(ordered_hand_values(hand)) && flush?(hand) )
+    (ROYAL_FLUSH.include?(ordered_hand_values(hand)) && flush?(hand))
   end
 end
