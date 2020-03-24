@@ -13,7 +13,8 @@ class PokerHandEvaluator
   end
 
   def valid?
-   correct_hand_size?
+    duplicates?
+    correct_hand_size?
   end
 
   def hand_classifications
@@ -116,5 +117,9 @@ class PokerHandEvaluator
     @hands.map do |hand|
       raise InvalidHandError if hand.length != 14
     end
+  end
+
+  def duplicates?
+    raise InvalidHandError if @hands.join(' ').split.uniq.length != @hands.join(' ').split.length
   end
 end
