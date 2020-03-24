@@ -1,15 +1,15 @@
 ## How to use the evaluator
 Here is a snapshot of how to interact with the app in IRB. Replace the contents of hands with the hand that you are looking to evaluate. Please see below for general usage.
 
-➜  Poker git:(master) irb
-2.7.0-preview1 :001 > require './poker_hand_evaluator'
- => true 
-2.7.0-preview1 :002 > hands = ["AS KC 3H 8C 5H"]
- => ["AS KC 3H 8C 5H"] 
-2.7.0-preview1 :003 > my_hand = PokerHandEvaluator.new(hands)
- => #<PokerHandEvaluator:0x00007fe2364c22f8 @hands=["AS KC 3H 8C 5H"]> 
-2.7.0-preview1 :004 > my_hand.hand_classifications
- => ["HIGH_CARD"] 
+➜  Poker git:(master) irb <br/>
+2.7.0-preview1 :001 > require './poker_hand_evaluator' <br/>
+ => true <br/>
+2.7.0-preview1 :002 > hands = ["AS KC 3H 8C 5H"] <br/>
+ => ["AS KC 3H 8C 5H"] <br/>
+2.7.0-preview1 :003 > my_hand = PokerHandEvaluator.new(hands) <br/>
+ => #<PokerHandEvaluator:0x00007fe2364c22f8 @hands=["AS KC 3H 8C 5H"]> <br/>
+2.7.0-preview1 :004 > my_hand.hand_classifications <br/>
+ => ["HIGH_CARD"] <br/>
 
 # Poker Hands
 
