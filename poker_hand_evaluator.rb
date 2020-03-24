@@ -34,7 +34,28 @@ class PokerHandEvaluator
         "HIGH_CARD"
       end
     end
+  end
 
+  private
+
+  def ordered_hand_values(hand)
+    find_values(hand).sort.join
+  end
+
+  def seperate_hand(hand)
+    hand.split
+  end
+
+  def find_suit(hand)
+    seperate_hand(hand).map do |card|
+      card.slice(1)
+    end
+  end
+
+  def find_values(hand)
+    seperate_hand(hand).map do |card|
+      card.chop 
+    end
   end
 
   def one_pair?(hand)
@@ -84,27 +105,5 @@ class PokerHandEvaluator
 
   def royal_flush?(hand)
     ( ROYAL_FLUSH.include?(ordered_hand_values(hand)) && flush?(hand) )
-  end
-
-  private
-
-  def ordered_hand_values(hand)
-    find_values(hand).sort.join
-  end
-
-  def seperate_hand(hand)
-    hand.split
-  end
-
-  def find_suit(hand)
-    seperate_hand(hand).map do |card|
-      card.slice(1)
-    end
-  end
-
-  def find_values(hand)
-    seperate_hand(hand).map do |card|
-      card.chop 
-    end
   end
 end
