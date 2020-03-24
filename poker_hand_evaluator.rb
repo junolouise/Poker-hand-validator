@@ -13,10 +13,7 @@ class PokerHandEvaluator
   end
 
   def valid?
-    @hands.map do |hand|
-      raise InvalidHandError if hand.length != 14
-    end
-    
+   correct_hand_size?
   end
 
   def hand_classifications
@@ -113,5 +110,11 @@ class PokerHandEvaluator
 
   def royal_flush?(hand)
     (ROYAL_FLUSH.include?(ordered_hand_values(hand)) && flush?(hand))
+  end
+
+  def correct_hand_size?
+    @hands.map do |hand|
+      raise InvalidHandError if hand.length != 14
+    end
   end
 end
