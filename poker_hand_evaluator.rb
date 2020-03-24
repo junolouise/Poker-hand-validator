@@ -10,6 +10,7 @@ class PokerHandEvaluator
   end
 
   def hand_classifications
+    return ["STRAIGHT_FLUSH"] if straight_flush?
     return ["FOUR_OF_A_KIND"] if four_of_a_kind?
     return ["FULL_HOUSE"] if full_house?
     return ["FLUSH"] if flush?
@@ -75,7 +76,11 @@ class PokerHandEvaluator
   end
 
   def full_house?
-    (three_of_a_kind? && one_pair?)
+    ( three_of_a_kind? && one_pair? )
+  end
+
+  def straight_flush?
+    ( flush? && straight? )
   end
 end
 
