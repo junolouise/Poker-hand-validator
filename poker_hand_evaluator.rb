@@ -4,8 +4,8 @@ require 'pry'
 class PokerHandEvaluator
   class InvalidHandError < StandardError; end
 
-  STRAIGHT_HAND = ['2345A','23456','34567','45678','56789','06789','0789J','089JQ','09JKQ','0AJKQ']
-  ROYAL_FLUSH = ['0AJKQ']
+  STRAIGHT_HAND_COMBINATIONS = ['2345A','23456','34567','45678','56789','06789','0789J','089JQ','09JKQ','0AJKQ']
+  ROYAL_FLUSH_VALUES = ['0AJKQ']
 
   def initialize(hands)
     @hands = hands
@@ -45,26 +45,6 @@ class PokerHandEvaluator
 
   private
 
-  def ordered_hand_values(hand)
-    find_values(hand).sort.join
-  end
-
-  def seperate_hand(hand)
-    hand.split
-  end
-
-  def find_suit(hand)
-    seperate_hand(hand).map do |card|
-      card.slice(1)
-    end
-  end
-
-  def find_values(hand)
-    seperate_hand(hand).map do |card|
-      card.chop
-    end
-  end
-
   def one_pair?(hand)
     card_values = find_values(hand)
     result = card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
@@ -92,7 +72,7 @@ class PokerHandEvaluator
 
   def straight?(hand)
     ordered_hand_values = find_values(hand).sort.join
-    STRAIGHT_HAND.include?(ordered_hand_values)
+    STRAIGHT_HAND_COMBINATIONS.include?(ordered_hand_values)
   end
 
   def flush?(hand)
@@ -110,7 +90,7 @@ class PokerHandEvaluator
   end
 
   def royal_flush?(hand)
-    (ROYAL_FLUSH.include?(ordered_hand_values(hand)) && flush?(hand))
+    (ROYAL_FLUSH_VALUES.include?(ordered_hand_values(hand)) && flush?(hand))
   end
 
   def correct_hand_size?
@@ -121,5 +101,25 @@ class PokerHandEvaluator
 
   def duplicates?
     raise InvalidHandError if @hands.join(' ').split.uniq.length != @hands.join(' ').split.length
+  end
+
+  def ordered_hand_values(hand)
+    find_values(hand).sort.join
+  end
+
+  def seperate_hand(hand)
+    hand.split
+  end
+
+  def find_suit(hand)
+    seperate_hand(hand).map do |card|
+      card.slice(1)
+    end
+  end
+
+  def find_values(hand)
+    seperate_hand(hand).map do |card|
+      card.chop
+    end
   end
 end
