@@ -37,61 +37,39 @@ class PokerHandEvaluator
 
   end
 
-  def seperated_hand(hand)
-    @seperated_hand = hand.split
-  end
-
   def one_pair?(hand)
-    seperated_hand(hand)
-    value = @seperated_hand.map do |card|
-      card.chop 
-    end
-    result = value.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
+    card_values = find_values(hand)
+    result = card_values.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
     result.has_value?(2)
   end
  
   def two_pair?(hand)
-    seperated_hand(hand)
-    value = @seperated_hand.map do |card|
-      card.chop 
-    end
-    result = value.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+    card_values = find_values(hand)
+    result = card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
     not_pairs = result.delete_if{|card, counts| counts == 2}
     not_pairs.length == 1
   end
 
   def three_of_a_kind?(hand)
-    seperated_hand(hand)
-    value = @seperated_hand.map do |card|
-      card.chop 
-    end
-    result = value.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
+    card_values = find_values(hand)
+    result = card_values.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
     result.has_value?(3)
   end
 
   def four_of_a_kind?(hand)
-    seperated_hand(hand)
-    value = @seperated_hand.map do |card|
-      card.chop 
-    end
-    result = value.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
+    card_values = find_values(hand)
+    result = card_values.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
     result.has_value?(4)
   end
 
   def straight?(hand)
-    seperated_hand(hand)
-    value = @seperated_hand.map do |card|
-      card.chop 
-    end.sort.join
+    ordered_hand_values = find_values(hand).sort.join
     
-    STRAIGHT_HAND.include?(value)
+    STRAIGHT_HAND.include?(ordered_hand_values)
   end
 
   def flush?(hand)
-    seperated_hand(hand)
-    suit = @seperated_hand.map do |card|
-      card.slice(1)
-    end
+    suit = find_suit(hand)
     result = suit.each_with_object(Hash.new(0)) { |card,counts| counts[card] += 1 }
     result.has_value?(5)
   end
@@ -105,12 +83,28 @@ class PokerHandEvaluator
   end
 
   def royal_flush?(hand)
-    seperated_hand(hand)
-    value = @seperated_hand.map do |card|
+    ( ROYAL_FLUSH.include?(ordered_hand_values(hand)) && flush?(hand) )
+  end
+
+  private
+
+  def ordered_hand_values(hand)
+    find_values(hand).sort.join
+  end
+
+  def seperate_hand(hand)
+    hand.split
+  end
+
+  def find_suit(hand)
+    seperate_hand(hand).map do |card|
+      card.slice(1)
+    end
+  end
+
+  def find_values(hand)
+    seperate_hand(hand).map do |card|
       card.chop 
-    end.sort.join
-    
-    ( ROYAL_FLUSH.include?(value) && flush?(hand) )
+    end
   end
 end
-
