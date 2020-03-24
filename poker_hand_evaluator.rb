@@ -33,7 +33,9 @@ class PokerHandEvaluator
     value = seperated_hand.map do |card|
       card.chop 
     end
-    value
+    result = value.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+    not_pairs = result.delete_if{|card, counts| counts == 2}
+    not_pairs.length == 1
   end
 
   def three_of_a_kind?
