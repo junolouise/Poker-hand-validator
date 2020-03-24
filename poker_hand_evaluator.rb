@@ -4,12 +4,14 @@ require 'pry'
 class PokerHandEvaluator
 
   STRAIGHT_HAND = ['2345A','23456','34567','45678','56789','06789','0789J','089JQ','09JKQ','0AJKQ']
+  ROYAL_FLUSH = ['0AJKQ']
 
   def initialize(hands)
     @hands = hands.first
   end
 
   def hand_classifications
+    return ["ROYAL_FLUSH"] if royal_flush?
     return ["STRAIGHT_FLUSH"] if straight_flush?
     return ["FOUR_OF_A_KIND"] if four_of_a_kind?
     return ["FULL_HOUSE"] if full_house?
@@ -81,6 +83,15 @@ class PokerHandEvaluator
 
   def straight_flush?
     ( flush? && straight? )
+  end
+
+  def royal_flush?
+    seperated_hand = @hands.split
+    value = seperated_hand.map do |card|
+      card.chop 
+    end.sort.join
+    
+    ( ROYAL_FLUSH.include?(value) && flush? )
   end
 end
 
