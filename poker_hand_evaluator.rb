@@ -11,34 +11,30 @@ class PokerHandEvaluator
   end
 
   def hand_classifications
-    hand_scores = []
-
-    @hands.each do |hand|
+    @hands.map do |hand|
       if royal_flush?(hand)
-        hand_scores << "ROYAL_FLUSH"
+        "ROYAL_FLUSH"
       elsif straight_flush?(hand)
-        hand_scores << "STRAIGHT_FLUSH"
-      elsif
-        four_of_a_kind?(hand)
-        hand_scores << "FOUR_OF_A_KIND"
+        "STRAIGHT_FLUSH"
+      elsif four_of_a_kind?(hand)
+        "FOUR_OF_A_KIND"
       elsif full_house?(hand)
-        hand_scores << "FULL_HOUSE"
+        "FULL_HOUSE"
       elsif flush?(hand)
-        hand_scores << "FLUSH"
+        "FLUSH"
       elsif straight?(hand)
-        hand_scores << "STRAIGHT"
+        "STRAIGHT"
       elsif three_of_a_kind?(hand)
-        hand_scores << "THREE_OF_A_KIND"
+        "THREE_OF_A_KIND"
       elsif two_pair?(hand)
-        hand_scores << "TWO_PAIR"
+        "TWO_PAIR"
       elsif one_pair?(hand)
-        hand_scores << "ONE_PAIR"
+        "ONE_PAIR"
       else
-        hand_scores << "HIGH_CARD"
+        "HIGH_CARD"
       end
     end
 
-    hand_scores
   end
 
   def hand_checker
